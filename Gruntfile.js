@@ -17,11 +17,11 @@ module.exports = function(grunt) {
     newplugin: {
 		js: {
 			paths: ["js/**/*.js"],
-			output: "head.js"
+			output: "index.html"
 		},
 		css: {
 			paths: ["css/**/*.css"],
-			output: "head.css"
+			output: "index.html"
 		}
     }
 

@@ -51,21 +51,30 @@ module.exports = function(grunt) {
   grunt.registerMultiTask("newplugin", "Append JS/CSS assets to a file", function() {
     var paths = grunt.file.expand( this.data.paths ),
         out = this.data.output,
-        contents = "";
+        arr = [], contents = "";
 		console.log("1",this.data);
 		console.log("2",paths);
 		console.log("3",out);
-		var srcf = grunt.file.read(paths[0]);
-			console.log("4",srcf);
+		var srcf = grunt.file.read(out);
+			//console.log("5",srcf);
+			
     paths.forEach(function( path ) {
-        if ( /\.js$/i.test( path ) ) {
-            contents += '<script src="' + path + '"></script>';
-        } else if ( /\.css$/i.test( path )) {
-            contents += '<link rel="stylesheet" type="text/css" href=' + path + ' />';
-        }
+		if((srcf.indexOf(path)) == -1){
+			console.log("4",path);
+			if ( /\.js$/i.test( path ) ) {
+					contents += '<script src="' + path + '"></script>';
+			} else if ( /\.css$/i.test( path )) {
+				contents += '<link rel="stylesheet" type="text/css" href=' + path + ' />';
+			}
+		}
     });
-
-    grunt.file.write( out, contents );
+	
+	if((srcf.indexOf('<head>')) > -1){
+			arr = srcf.split('</head>');
+			grunt.file.write( out, arr[0]+contents+'</head>'+arr[1]);
+	} else {
+		grunt.file.write( out, '<head>'+srcf+contents+'</head>');
+	}
 });
 
 };
